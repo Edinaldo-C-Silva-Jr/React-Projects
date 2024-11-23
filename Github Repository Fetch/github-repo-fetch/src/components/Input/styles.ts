@@ -3,8 +3,10 @@ import styled from "styled-components";
 export const InputContainer = styled.div`
     border: 1px solid #bfdfff;
     border-radius: 30px;
+
     height: 50px;
     width: 90%;
+    margin: 5px;
 
     display: flex;
     align-items: center;
