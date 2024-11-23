@@ -1,25 +1,27 @@
 import styled from "styled-components";
 
 export const InputContainer = styled.div`
-    border: 1px solid #c0d0e0;
+    border: 1px solid #bfdfff;
     border-radius: 30px;
-    height: 60px;
-    width: 50%;
+    height: 50px;
+    width: 90%;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
+    background-color: #202830;
+
     &:focus-within {
-        border: 2px solid #c0d0e0;
+        border: 2px solid #bfdfff;
     }
 
     input {
         width: 96%;
-        height: 60px;
+        height: 100%;
         border: 0;
 
-        font-size: 32px;
+        font-size: 24px;
         background: transparent;
         color: #ffffff;
 
