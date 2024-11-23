@@ -5,10 +5,10 @@ export const StyledButton = styled.button`
     background-color: #304050;
     color: #ffffff;
 
-    border-radius: 25px;
-    height: 50px;
+    border-radius: 20px;
+    height: 40px;
     width: 40%;
-    margin: 5px;
+    margin: 5px 0;
 
     cursor: pointer;
 

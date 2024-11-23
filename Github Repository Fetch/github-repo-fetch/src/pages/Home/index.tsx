@@ -1,6 +1,7 @@
 import Button from "../../components/Button";
 import Header from "../../components/Header";
 import Input from "../../components/Input";
+import ProfileInfo from "../../components/ProfileInfo";
 import {
     Container,
     LeftColumn,
@@ -20,6 +21,7 @@ const App = () => {
                         <Input />
                         <Button />
                     </SearchArea>
+                    <ProfileInfo />
                     <SearchResults>
                         <p>Example</p>
                         <p>Example</p>
