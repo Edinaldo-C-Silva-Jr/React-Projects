@@ -1,5 +1,14 @@
+import { Container, ItemDescription, ItemTitle } from "./styles";
+
 const ListItem = () => {
-    return <div></div>;
+    return (
+        <Container>
+            <ItemTitle>Example Repository</ItemTitle>
+            <ItemDescription>
+                Description of the example repository.
+            </ItemDescription>
+        </Container>
+    );
 };
 
 export default ListItem;

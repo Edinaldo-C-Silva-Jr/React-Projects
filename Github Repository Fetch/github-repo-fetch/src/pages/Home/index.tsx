@@ -1,6 +1,7 @@
 import Button from "../../components/Button";
 import Header from "../../components/Header";
 import Input from "../../components/Input";
+import ListItem from "../../components/ListItem";
 import ProfileInfo from "../../components/ProfileInfo";
 import {
     Container,
@@ -23,12 +24,12 @@ const App = () => {
                     </SearchArea>
                     <ProfileInfo />
                     <SearchResults>
-                        <p>Example</p>
-                        <p>Example</p>
-                        <p>Example</p>
-                        <p>Example</p>
-                        <p>Example</p>
-                        <p>Example</p>
+                        <ListItem />
+                        <ListItem />
+                        <ListItem />
+                        <ListItem />
+                        <ListItem />
+                        <ListItem />
                     </SearchResults>
                 </LeftColumn>
                 <RightColumn></RightColumn>
