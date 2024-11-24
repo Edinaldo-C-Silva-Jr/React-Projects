@@ -1,9 +1,10 @@
 import { InputContainer } from "./styles";
+import { InputProperties } from "./types";
 
-const Input = () => {
+const Input = ({value, onChange}: InputProperties) => {
     return (
         <InputContainer>
-            <input />
+            <input value={value} onChange={onChange}/>
         </InputContainer>
     );
 };

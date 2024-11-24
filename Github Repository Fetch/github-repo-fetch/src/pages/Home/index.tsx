@@ -38,7 +38,7 @@ const App = () => {
             <Page>
                 <LeftColumn>
                     <SearchArea>
-                        <Input />
+                        <Input value={usernameInput} onChange={(e: ChangeEvent<HTMLInputElement>) => setUsernameInput(e.target.value)} />
                         <Button />
                     </SearchArea>
                     <ProfileInfo />
