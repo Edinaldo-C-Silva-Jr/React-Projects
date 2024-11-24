@@ -6,15 +6,18 @@ import {
     ProfilePicture,
     ProfileUser,
 } from "./styles";
+import { GithubUserProperty } from "./types";
 
-const ProfileInfo = () => {
+const ProfileInfo = ({ githubUser }: GithubUserProperty) => {
     return (
         <ProfileContainer>
-            <ProfilePicture src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"></ProfilePicture>
+            <ProfilePicture src={githubUser.avatar_url}></ProfilePicture>
             <ProfileInformation>
-                <ProfileName>Github Test User</ProfileName>
-                <ProfileUser>@TestUserInformation</ProfileUser>
-                <ProfileLink href="https://github.com/">Profile Link</ProfileLink>
+                <ProfileName>{githubUser.name}</ProfileName>
+                <ProfileUser>@{githubUser.login}</ProfileUser>
+                <ProfileLink href={githubUser.html_url}>
+                    Profile Link
+                </ProfileLink>
             </ProfileInformation>
         </ProfileContainer>
     );

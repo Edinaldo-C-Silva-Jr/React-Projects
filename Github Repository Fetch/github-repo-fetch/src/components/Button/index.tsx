@@ -1,7 +1,8 @@
 import { StyledButton } from "./styles";
+import { ButtonProperties } from "./types";
 
-const Button = () => {
-    return <StyledButton>Search</StyledButton>;
+const Button = ({ onClick }: ButtonProperties) => {
+    return <StyledButton onClick={onClick}>Search</StyledButton>;
 };
 
 export default Button;

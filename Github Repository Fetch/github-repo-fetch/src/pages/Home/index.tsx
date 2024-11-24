@@ -14,23 +14,30 @@ import {
     SearchResults,
 } from "./styles";
 import { api } from "../../services/api";
+import { GithubUserInfo } from "../../components/ProfileInfo/types";
+import { isAxiosError } from "axios";
 
 const App = () => {
     const [usernameInput, setUsernameInput] = useState("");
-    const [user, setUser] = useState(null);
+    const [githubUser, setGithubUser] = useState<GithubUserInfo | null>(null);
 
     const getUserFromGithub = async () => {
         try {
-            const { data } = await api.get(`/users/${usernameInput}`);
-            
-            if (data.id) {
-                setUser(data);
-            }
+            const { data } = await api.get<GithubUserInfo>(
+                `/users/${usernameInput}`
+            );
 
+            if (data.id) {
+                setGithubUser(data);
+            }
         } catch (error) {
-            alert("Usuário não encontrado!");
+            if (isAxiosError(error) && error.response?.status === 404) {
+                alert("Usuário não encontrado!");
+            } else {
+                alert("Ocorreu um erro!");
+            }
         }
-    }
+    };
 
     return (
         <Container>
@@ -38,10 +45,15 @@ const App = () => {
             <Page>
                 <LeftColumn>
                     <SearchArea>
-                        <Input value={usernameInput} onChange={(e: ChangeEvent<HTMLInputElement>) => setUsernameInput(e.target.value)} />
-                        <Button />
+                        <Input
+                            value={usernameInput}
+                            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                                setUsernameInput(e.target.value)
+                            }
+                        />
+                        <Button onClick={getUserFromGithub} />
                     </SearchArea>
-                    <ProfileInfo />
+                    {githubUser && <ProfileInfo githubUser={githubUser} />}
                     <SearchResults>
                         <ListItem />
                         <ListItem />
