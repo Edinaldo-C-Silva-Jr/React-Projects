@@ -2,7 +2,8 @@ import styled from "styled-components";
 
 export const Container = styled.div`
     width: 100%;
-    margin-left: 30px;
+    margin: 10px 0 0 30px;
+    border-top: 1px solid #ffffff;
 
     display: flex;
     align-items: flex-start;
@@ -10,15 +11,15 @@ export const Container = styled.div`
 `;
 
 export const ItemTitle = styled.h2`
-    font-size: 24px;
+    font-size: 22px;
     font-weight: 700;
-    margin-left: 40px;
+    margin-left: 20px;
 
-    color: #c0d0c0;
+    color: #80b0f0;
 `;
 
 export const ItemDescription = styled.p`
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 400;
 
     color: #ffffff;

@@ -16,7 +16,7 @@ const ProfileInfo = ({ githubUser }: GithubUserProperty) => {
                 <ProfileName>{githubUser.name}</ProfileName>
                 <ProfileUser>@{githubUser.login}</ProfileUser>
                 <ProfileLink href={githubUser.html_url}>
-                    Profile Link
+                    Go to this profile
                 </ProfileLink>
             </ProfileInformation>
         </ProfileContainer>

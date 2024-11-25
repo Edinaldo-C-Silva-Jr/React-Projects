@@ -1,12 +1,11 @@
 import { Container, ItemDescription, ItemTitle } from "./styles";
+import { RepositoryProperty } from "./types";
 
-const ListItem = () => {
+const ListItem = ({ repository }: RepositoryProperty) => {
     return (
         <Container>
-            <ItemTitle>Example Repository</ItemTitle>
-            <ItemDescription>
-                Description of the example repository.
-            </ItemDescription>
+            <ItemTitle>{repository.name}</ItemTitle>
+            <ItemDescription>{repository.description}</ItemDescription>
         </Container>
     );
 };

@@ -16,10 +16,12 @@ import {
 import { api } from "../../services/api";
 import { GithubUserInfo } from "../../components/ProfileInfo/types";
 import { isAxiosError } from "axios";
+import { RepositoryBasicInfo } from "../../components/ListItem/types";
 
 const App = () => {
     const [usernameInput, setUsernameInput] = useState("");
     const [githubUser, setGithubUser] = useState<GithubUserInfo | null>(null);
+    const [userRepos, setUserRepos] = useState<RepositoryBasicInfo[] | []>([]);
 
     const getUserFromGithub = async () => {
         try {
@@ -29,6 +31,7 @@ const App = () => {
 
             if (data.id) {
                 setGithubUser(data);
+                getReposFromUser();
             }
         } catch (error) {
             if (isAxiosError(error) && error.response?.status === 404) {
@@ -36,6 +39,18 @@ const App = () => {
             } else {
                 alert("Ocorreu um erro!");
             }
+        }
+    };
+
+    const getReposFromUser = async () => {
+        try {
+            const { data } = await api.get(`/users/${usernameInput}/repos`);
+
+            if (data.length > 0) {
+                setUserRepos(data);
+            }
+        } catch (error) {
+            alert("Ocorreu um erro!");
         }
     };
 
@@ -55,12 +70,13 @@ const App = () => {
                     </SearchArea>
                     {githubUser && <ProfileInfo githubUser={githubUser} />}
                     <SearchResults>
-                        <ListItem />
-                        <ListItem />
-                        <ListItem />
-                        <ListItem />
-                        <ListItem />
-                        <ListItem />
+                        {userRepos.length
+                            ? userRepos.map(
+                                  (repository: RepositoryBasicInfo) => (
+                                      <ListItem repository={repository} />
+                                  )
+                              )
+                            : null}
                     </SearchResults>
                 </LeftColumn>
                 <RightColumn></RightColumn>
