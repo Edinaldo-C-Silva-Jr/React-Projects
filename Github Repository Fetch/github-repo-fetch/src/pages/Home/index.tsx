@@ -17,6 +17,7 @@ import { api } from "../../services/api";
 import { GithubUserInfo } from "../../components/ProfileInfo/types";
 import { isAxiosError } from "axios";
 import { RepositoryBasicInfo } from "../../components/ListItem/types";
+import RepositoryPanel from "../../components/RepositoryPanel";
 
 const App = () => {
     const [usernameInput, setUsernameInput] = useState("");
@@ -79,7 +80,9 @@ const App = () => {
                             : null}
                     </SearchResults>
                 </LeftColumn>
-                <RightColumn></RightColumn>
+                <RightColumn>
+                    <RepositoryPanel />
+                </RightColumn>
             </Page>
         </Container>
     );

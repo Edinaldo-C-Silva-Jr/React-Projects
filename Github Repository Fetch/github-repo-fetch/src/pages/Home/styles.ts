@@ -13,8 +13,9 @@ export const Page = styled.div`
 `;
 
 export const LeftColumn = styled.div`
-    flex: 2;
+    width: 40%;
     height: 100%;
+    margin-right: 10px;
 
     display: flex;
     flex-direction: column;
@@ -40,5 +41,6 @@ export const SearchResults = styled.div`
 `;
 
 export const RightColumn = styled.div`
-    flex: 3;
+    margin-left: 10px;
+    width: 60%;
 `;
