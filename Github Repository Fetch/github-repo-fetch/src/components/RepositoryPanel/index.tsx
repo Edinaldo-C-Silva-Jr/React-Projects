@@ -5,14 +5,13 @@ import {
     RepoDescription,
     RepoTitle,
 } from "./styles";
+import { RepositoryProperty } from "./types";
 
-const RepositoryPanel = () => {
+const RepositoryPanel = ({ repository }: RepositoryProperty) => {
     return (
         <Container>
-            <RepoTitle>Example Repository</RepoTitle>
-            <RepoDescription>
-                Description of the Example Repository.
-            </RepoDescription>
+            <RepoTitle>{repository.name}</RepoTitle>
+            <RepoDescription>{repository.description}</RepoDescription>
             <LanguagesContainer>
                 <LanguageTooltip>C#</LanguageTooltip>
                 <LanguageTooltip>JavaScript</LanguageTooltip>
