@@ -10,10 +10,6 @@ export interface RepositoryExtraInfo {
     languages: string[];
 }
 
-export interface RepoLanguages {
-    languages: string[];
-}
-
 export interface RepositoryPanelProperties {
     repository: RepositoryExtraInfo;
 }

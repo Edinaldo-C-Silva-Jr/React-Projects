@@ -18,10 +18,7 @@ import { GithubUserInfo } from "../../components/ProfileInfo/types";
 import { isAxiosError } from "axios";
 import { RepositoryBasicInfo } from "../../components/ListItem/types";
 import RepositoryPanel from "../../components/RepositoryPanel";
-import {
-    RepoLanguages,
-    RepositoryExtraInfo,
-} from "../../components/RepositoryPanel/types";
+import { RepositoryExtraInfo } from "../../components/RepositoryPanel/types";
 
 const App = () => {
     const [usernameInput, setUsernameInput] = useState("");
@@ -89,10 +86,10 @@ const App = () => {
 
     const getLanguagesFromRepo = async (name: string, repo: string) => {
         try {
-            const { data } = await api.get<RepoLanguages>(
+            const { data } = await api.get<string[]>(
                 `/repos/${name}/${repo}/languages`
             );
-            return data.languages;
+            return Object.keys(data);
         } catch (error) {
             alert("Ocorreu um erro!");
             return [];
