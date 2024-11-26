@@ -19,6 +19,7 @@ export const ProfilePicture = styled.img`
 export const ProfileInformation = styled.div`
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
 `;
 
 export const ProfileName = styled.h2`

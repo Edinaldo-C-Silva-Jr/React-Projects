@@ -66,6 +66,8 @@ const App = () => {
             );
 
             if (data.full_name) {
+                data.created_at = new Date(data.created_at);
+                data.updated_at = new Date(data.updated_at);
                 setRepoInfo(data);
             }
         } catch (error) {
