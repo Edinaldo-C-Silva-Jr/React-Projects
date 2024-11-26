@@ -2,12 +2,17 @@ import styled from "styled-components";
 
 export const Container = styled.div`
     width: 100%;
-    margin: 10px 0 0 30px;
+    margin-left: 30px;
+    padding-bottom: 10px;
     border-top: 1px solid #ffffff;
 
     display: flex;
     align-items: flex-start;
     flex-direction: column;
+
+    &:hover {
+        background-color: #283038;
+    }
 `;
 
 export const ItemTitle = styled.h2`
@@ -16,6 +21,12 @@ export const ItemTitle = styled.h2`
     margin-left: 20px;
 
     color: #80b0f0;
+
+    cursor: pointer;
+
+    &:hover {
+        opacity: 0.8;
+    }
 `;
 
 export const ItemDescription = styled.p`
