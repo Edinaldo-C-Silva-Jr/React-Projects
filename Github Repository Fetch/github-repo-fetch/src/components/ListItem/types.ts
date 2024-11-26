@@ -3,6 +3,7 @@ export interface RepositoryBasicInfo {
     description: string;
 }
 
-export interface RepositoryProperty {
+export interface ListItemProperties {
     repository: RepositoryBasicInfo;
+    clickMethod: (repo: string) => void;
 }

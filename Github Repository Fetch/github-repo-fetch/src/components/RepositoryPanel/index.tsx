@@ -5,9 +5,9 @@ import {
     RepoDescription,
     RepoTitle,
 } from "./styles";
-import { RepositoryProperty } from "./types";
+import { RepositoryPanelProperties } from "./types";
 
-const RepositoryPanel = ({ repository }: RepositoryProperty) => {
+const RepositoryPanel = ({ repository }: RepositoryPanelProperties) => {
     return (
         <Container>
             <RepoTitle>{repository.name}</RepoTitle>

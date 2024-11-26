@@ -9,6 +9,6 @@ export interface RepositoryExtraInfo {
     updated_at: Date;
 }
 
-export interface RepositoryProperty {
+export interface RepositoryPanelProperties {
     repository: RepositoryExtraInfo;
 }

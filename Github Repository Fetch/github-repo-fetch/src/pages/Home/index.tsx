@@ -18,11 +18,13 @@ import { GithubUserInfo } from "../../components/ProfileInfo/types";
 import { isAxiosError } from "axios";
 import { RepositoryBasicInfo } from "../../components/ListItem/types";
 import RepositoryPanel from "../../components/RepositoryPanel";
+import { RepositoryExtraInfo } from "../../components/RepositoryPanel/types";
 
 const App = () => {
     const [usernameInput, setUsernameInput] = useState("");
     const [githubUser, setGithubUser] = useState<GithubUserInfo | null>(null);
     const [userRepos, setUserRepos] = useState<RepositoryBasicInfo[] | []>([]);
+    const [repoInfo, setRepoInfo] = useState<RepositoryExtraInfo | null>(null);
 
     const getUserFromGithub = async () => {
         try {
@@ -45,13 +47,35 @@ const App = () => {
 
     const getReposFromUser = async () => {
         try {
-            const { data } = await api.get(`/users/${usernameInput}/repos`);
+            const { data } = await api.get<RepositoryBasicInfo[]>(
+                `/users/${usernameInput}/repos`
+            );
 
             if (data.length > 0) {
                 setUserRepos(data);
             }
         } catch (error) {
             alert("Ocorreu um erro!");
+        }
+    };
+
+    const getInfoFromRepo = async (name: string, repo: string) => {
+        try {
+            const { data } = await api.get<RepositoryExtraInfo>(
+                `/repos/${name}/${repo}`
+            );
+
+            if (data.full_name) {
+                setRepoInfo(data);
+            }
+        } catch (error) {
+            alert("Ocorreu um erro!");
+        }
+    };
+
+    const handleListItemClick = (repo: string) => {
+        if (githubUser) {
+            getInfoFromRepo(githubUser.login, repo);
         }
     };
 
@@ -74,14 +98,17 @@ const App = () => {
                         {userRepos.length
                             ? userRepos.map(
                                   (repository: RepositoryBasicInfo) => (
-                                      <ListItem repository={repository} />
+                                      <ListItem
+                                          repository={repository}
+                                          clickMethod={handleListItemClick}
+                                      />
                                   )
                               )
                             : null}
                     </SearchResults>
                 </LeftColumn>
                 <RightColumn>
-                    <RepositoryPanel />
+                    {repoInfo && <RepositoryPanel repository={repoInfo} />}
                 </RightColumn>
             </Page>
         </Container>
