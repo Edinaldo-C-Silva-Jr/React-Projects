@@ -15,13 +15,15 @@ const RepositoryPanel = ({ repository }: RepositoryPanelProperties) => {
         <Container>
             <RepoTitle>{repository.name}</RepoTitle>
             <RepoDescription>{repository.description}</RepoDescription>
-            <RepoLink href={repository.html_url}>Go to this repository</RepoLink>
+            <RepoLink href={repository.html_url}>
+                Go to this repository
+            </RepoLink>
             <StatisticsContainer>
                 <RepoStatistics>
                     Stars: {repository.stargazers_count}
                 </RepoStatistics>
                 <RepoStatistics>
-                    {`Last updated - ${repository.updated_at.toLocaleDateString(
+                    {`Created at - ${repository.created_at.toLocaleDateString(
                         "en-US",
                         {
                             year: "numeric",
@@ -38,7 +40,7 @@ const RepositoryPanel = ({ repository }: RepositoryPanelProperties) => {
                         : "Active Repository"}
                 </RepoStatistics>
                 <RepoStatistics>
-                    {`Created at - ${repository.created_at.toLocaleDateString(
+                    {`Last updated - ${repository.updated_at.toLocaleDateString(
                         "en-US",
                         {
                             year: "numeric",
@@ -49,11 +51,11 @@ const RepositoryPanel = ({ repository }: RepositoryPanelProperties) => {
                 </RepoStatistics>
             </StatisticsContainer>
             <LanguagesContainer>
-                <LanguageTooltip>C#</LanguageTooltip>
-                <LanguageTooltip>JavaScript</LanguageTooltip>
-                <LanguageTooltip>HTML</LanguageTooltip>
-                <LanguageTooltip>CSS</LanguageTooltip>
-                <LanguageTooltip>Typescript</LanguageTooltip>
+                {repository.languages.length > 0
+                    ? repository.languages.map((language) => (
+                          <LanguageTooltip>{language}</LanguageTooltip>
+                      ))
+                    : null}
             </LanguagesContainer>
         </Container>
     );

@@ -18,7 +18,10 @@ import { GithubUserInfo } from "../../components/ProfileInfo/types";
 import { isAxiosError } from "axios";
 import { RepositoryBasicInfo } from "../../components/ListItem/types";
 import RepositoryPanel from "../../components/RepositoryPanel";
-import { RepositoryExtraInfo } from "../../components/RepositoryPanel/types";
+import {
+    RepoLanguages,
+    RepositoryExtraInfo,
+} from "../../components/RepositoryPanel/types";
 
 const App = () => {
     const [usernameInput, setUsernameInput] = useState("");
@@ -66,12 +69,33 @@ const App = () => {
             );
 
             if (data.full_name) {
-                data.created_at = new Date(data.created_at);
-                data.updated_at = new Date(data.updated_at);
-                setRepoInfo(data);
+                const repoInfo: RepositoryExtraInfo = {
+                    full_name: data.full_name,
+                    name: data.name,
+                    description: data.description,
+                    html_url: data.html_url,
+                    stargazers_count: data.stargazers_count,
+                    archived: data.archived,
+                    created_at: new Date(data.created_at),
+                    updated_at: new Date(data.updated_at),
+                    languages: await getLanguagesFromRepo(name, repo),
+                };
+                setRepoInfo(repoInfo);
             }
         } catch (error) {
             alert("Ocorreu um erro!");
+        }
+    };
+
+    const getLanguagesFromRepo = async (name: string, repo: string) => {
+        try {
+            const { data } = await api.get<RepoLanguages>(
+                `/repos/${name}/${repo}/languages`
+            );
+            return data.languages;
+        } catch (error) {
+            alert("Ocorreu um erro!");
+            return [];
         }
     };
 

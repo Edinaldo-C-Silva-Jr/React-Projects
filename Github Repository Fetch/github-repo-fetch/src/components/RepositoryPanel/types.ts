@@ -7,6 +7,11 @@ export interface RepositoryExtraInfo {
     archived: boolean;
     created_at: Date;
     updated_at: Date;
+    languages: string[];
+}
+
+export interface RepoLanguages {
+    languages: string[];
 }
 
 export interface RepositoryPanelProperties {
