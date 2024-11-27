@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useState, useEffect } from "react";
 
 import Button from "../../components/Button";
 import Header from "../../components/Header";
@@ -15,16 +15,34 @@ import {
 } from "./styles";
 import { api } from "../../services/api";
 import { GithubUserInfo } from "../../components/ProfileInfo/types";
-import { isAxiosError } from "axios";
+import axios, { isAxiosError } from "axios";
 import { RepositoryBasicInfo } from "../../components/ListItem/types";
 import RepositoryPanel from "../../components/RepositoryPanel";
 import { RepositoryExtraInfo } from "../../components/RepositoryPanel/types";
 
 const App = () => {
-    const [usernameInput, setUsernameInput] = useState("");
+    const [usernameInput, setUsernameInput] = useState<string>("");
     const [githubUser, setGithubUser] = useState<GithubUserInfo | null>(null);
-    const [userRepos, setUserRepos] = useState<RepositoryBasicInfo[] | []>([]);
+    const [userRepos, setUserRepos] = useState<RepositoryBasicInfo[]>([]);
     const [repoInfo, setRepoInfo] = useState<RepositoryExtraInfo | null>(null);
+    const [languageColors, setLanguageColors] = useState<string[]>([]);
+
+    useEffect(() => {
+        const getLanguageColors = async () => {
+            try {
+                const { data } = await axios.get(
+                    `https://raw.githubusercontent.com/ozh/github-colors/master/colors.json`
+                );
+
+
+                setLanguageColors(data);
+            } catch (error) {
+                alert("Ocorreu um erro!");
+            }
+        };
+
+        getLanguageColors();
+    }, []);
 
     const getUserFromGithub = async () => {
         try {
