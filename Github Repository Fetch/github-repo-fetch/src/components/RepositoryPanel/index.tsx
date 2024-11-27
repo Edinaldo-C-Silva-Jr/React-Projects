@@ -1,7 +1,7 @@
+import LanguageTag from "../LanguageTag";
 import {
     Container,
     LanguagesContainer,
-    LanguageTooltip,
     RepoDescription,
     RepoLink,
     RepoStatistics,
@@ -53,7 +53,7 @@ const RepositoryPanel = ({ repository }: RepositoryPanelProperties) => {
             <LanguagesContainer>
                 {repository.languages.length > 0
                     ? repository.languages.map((language) => (
-                          <LanguageTooltip>{language}</LanguageTooltip>
+                          <LanguageTag language={language} />
                       ))
                     : null}
             </LanguagesContainer>

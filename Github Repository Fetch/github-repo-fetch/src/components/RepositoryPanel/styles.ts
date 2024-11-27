@@ -65,10 +65,3 @@ export const LanguagesContainer = styled.div`
     align-items: center;
     justify-content: space-evenly;
 `;
-
-export const LanguageTooltip = styled.p`
-    font-size: 16;
-    font-weight: 400;
-
-    color: #a0a0a0;
-`;
