@@ -1,3 +1,5 @@
+import { LanguageInformation } from "../LanguageTag/types";
+
 export interface RepositoryExtraInfo {
     full_name: string;
     name: string;
@@ -7,7 +9,7 @@ export interface RepositoryExtraInfo {
     archived: boolean;
     created_at: Date;
     updated_at: Date;
-    languages: string[];
+    languageInfo: LanguageInformation[];
 }
 
 export interface RepositoryPanelProperties {

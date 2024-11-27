@@ -23,6 +23,7 @@ export const RepoDescription = styled.p`
     font-size: 14px;
     font-weight: 400;
     margin-bottom: 10px;
+    text-align: center;
 
     color: #ffffff;
 `;
@@ -60,8 +61,10 @@ export const LanguagesContainer = styled.div`
     width: 90%;
     height: 30px;
     margin: 10px 0;
+    border-bottom: 1px solid #ffffff;
 
     display: flex;
-    align-items: center;
-    justify-content: space-evenly;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 25px;
 `;

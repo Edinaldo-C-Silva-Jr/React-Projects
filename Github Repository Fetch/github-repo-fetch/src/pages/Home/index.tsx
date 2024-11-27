@@ -19,13 +19,17 @@ import axios, { isAxiosError } from "axios";
 import { RepositoryBasicInfo } from "../../components/ListItem/types";
 import RepositoryPanel from "../../components/RepositoryPanel";
 import { RepositoryExtraInfo } from "../../components/RepositoryPanel/types";
+import { FormattedLanguageData } from "./types";
+import { LanguageInformation } from "../../components/LanguageTag/types";
 
 const App = () => {
     const [usernameInput, setUsernameInput] = useState<string>("");
     const [githubUser, setGithubUser] = useState<GithubUserInfo | null>(null);
     const [userRepos, setUserRepos] = useState<RepositoryBasicInfo[]>([]);
     const [repoInfo, setRepoInfo] = useState<RepositoryExtraInfo | null>(null);
-    const [languageColors, setLanguageColors] = useState<string[]>([]);
+    const [languageColors, setLanguageColors] = useState<FormattedLanguageData>(
+        {}
+    );
 
     useEffect(() => {
         const getLanguageColors = async () => {
@@ -34,8 +38,14 @@ const App = () => {
                     `https://raw.githubusercontent.com/ozh/github-colors/master/colors.json`
                 );
 
+                const languageColors: FormattedLanguageData = Object.keys(
+                    data
+                ).reduce((acc: FormattedLanguageData, language: string) => {
+                    acc[language] = data[language].color;
+                    return acc;
+                }, {});
 
-                setLanguageColors(data);
+                setLanguageColors(languageColors);
             } catch (error) {
                 alert("Ocorreu um erro!");
             }
@@ -77,7 +87,13 @@ const App = () => {
         }
     };
 
-    const getInfoFromRepo = async (name: string, repo: string) => {
+    const handleListItemClick = (repo: string) => {
+        if (githubUser) {
+            getExtraInfoFromRepo(githubUser.login, repo);
+        }
+    };
+
+    const getExtraInfoFromRepo = async (name: string, repo: string) => {
         try {
             const { data } = await api.get<RepositoryExtraInfo>(
                 `/repos/${name}/${repo}`
@@ -93,7 +109,7 @@ const App = () => {
                     archived: data.archived,
                     created_at: new Date(data.created_at),
                     updated_at: new Date(data.updated_at),
-                    languages: await getLanguagesFromRepo(name, repo),
+                    languageInfo: await getLanguageInfoFromRepo(name, repo),
                 };
                 setRepoInfo(repoInfo);
             }
@@ -102,21 +118,24 @@ const App = () => {
         }
     };
 
-    const getLanguagesFromRepo = async (name: string, repo: string) => {
+    const getLanguageInfoFromRepo = async (name: string, repo: string) => {
         try {
             const { data } = await api.get<string[]>(
                 `/repos/${name}/${repo}/languages`
             );
-            return Object.keys(data);
+
+            const languageNames: string[] = Object.keys(data);
+            const languageInfo: LanguageInformation[] = languageNames.map(
+                (name) => ({
+                    language: name,
+                    color: languageColors[name],
+                })
+            );
+
+            return languageInfo;
         } catch (error) {
             alert("Ocorreu um erro!");
             return [];
-        }
-    };
-
-    const handleListItemClick = (repo: string) => {
-        if (githubUser) {
-            getInfoFromRepo(githubUser.login, repo);
         }
     };
 

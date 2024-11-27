@@ -51,9 +51,9 @@ const RepositoryPanel = ({ repository }: RepositoryPanelProperties) => {
                 </RepoStatistics>
             </StatisticsContainer>
             <LanguagesContainer>
-                {repository.languages.length > 0
-                    ? repository.languages.map((language) => (
-                          <LanguageTag language={language} />
+                {repository.languageInfo.length > 0
+                    ? repository.languageInfo.map((info) => (
+                          <LanguageTag languageProperty={info} />
                       ))
                     : null}
             </LanguagesContainer>
