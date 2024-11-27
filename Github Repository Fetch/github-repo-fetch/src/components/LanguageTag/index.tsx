@@ -1,10 +1,10 @@
 import { LanguageIcon, LanguageName, TagContainer } from "./styles";
 import { LanguageTagProperties } from "./types";
 
-const LanguageTag = ({language}: LanguageTagProperties) => {
+const LanguageTag = ({languageProperty}: LanguageTagProperties) => {
     return <TagContainer>
-        <LanguageIcon />
-        <LanguageName>{language}</LanguageName>
+        <LanguageIcon color={languageProperty.color}/>
+        <LanguageName>{languageProperty.language}</LanguageName>
     </TagContainer>;
 };
 
