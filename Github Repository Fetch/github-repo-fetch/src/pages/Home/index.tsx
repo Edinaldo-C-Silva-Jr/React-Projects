@@ -64,29 +64,40 @@ const App = () => {
     }, []);
 
     const getUserFromGithub = async () => {
-        try {
-            const { data } = await api.get<GithubUserInfo>(
-                `/users/${usernameInput}`
-            );
+        const cachedUser = getCachedItem(usernameInput);
 
-            if (data.id) {
-                const userRepos = await getReposFromUser();
+        if (cachedUser) {
+            const parsedUser: GithubUserInfo = JSON.parse(cachedUser);
+            setGithubUser(parsedUser)
+        } else {
+            try {
+                const { data } = await api.get<GithubUserInfo>(
+                    `/users/${usernameInput}`
+                );
 
-                const githubUser: GithubUserInfo = {
-                    id: data.id,
-                    avatar_url: data.avatar_url,
-                    name: data.name,
-                    login: data.login,
-                    html_url: data.html_url,
-                    repos: userRepos ? userRepos : [],
-                };
-                setGithubUser(githubUser);
-            }
-        } catch (error) {
-            if (isAxiosError(error) && error.response?.status === 404) {
-                alert("Usuário não encontrado!");
-            } else {
-                alert("Ocorreu um erro!");
+                if (data.id) {
+                    const userRepos = await getReposFromUser();
+
+                    const fetchedUser: GithubUserInfo = {
+                        id: data.id,
+                        avatar_url: data.avatar_url,
+                        name: data.name,
+                        login: data.login,
+                        html_url: data.html_url,
+                        repos: userRepos ? userRepos : [],
+                    };
+                    setGithubUser(fetchedUser);
+                    setCachedItem(
+                        fetchedUser.login,
+                        JSON.stringify(fetchedUser)
+                    );
+                }
+            } catch (error) {
+                if (isAxiosError(error) && error.response?.status === 404) {
+                    alert("Usuário não encontrado!");
+                } else {
+                    alert("Ocorreu um erro!");
+                }
             }
         }
     };
@@ -118,7 +129,7 @@ const App = () => {
     const getExtraInfoFromRepo = async (name: string, repo: string) => {
         const cachedData = getCachedItem(`${name}/${repo}`);
 
-        if (cachedData !== null) {
+        if (cachedData) {
             const parsedData: RepositoryExtraInfo = JSON.parse(cachedData);
             parsedData.created_at = new Date(parsedData.created_at);
             parsedData.updated_at = new Date(parsedData.updated_at);
