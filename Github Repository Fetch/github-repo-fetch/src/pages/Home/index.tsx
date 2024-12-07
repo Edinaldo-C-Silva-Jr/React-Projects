@@ -25,7 +25,6 @@ import { LanguageInformation } from "../../components/LanguageTag/types";
 const App = () => {
     const [usernameInput, setUsernameInput] = useState<string>("");
     const [githubUser, setGithubUser] = useState<GithubUserInfo | null>(null);
-    const [userRepos, setUserRepos] = useState<RepositoryBasicInfo[]>([]);
     const [repoInfo, setRepoInfo] = useState<RepositoryExtraInfo | null>(null);
     const [languageColors, setLanguageColors] = useState<FormattedLanguageData>(
         {}
@@ -71,8 +70,17 @@ const App = () => {
             );
 
             if (data.id) {
-                setGithubUser(data);
-                getReposFromUser();
+                const userRepos = await getReposFromUser();
+
+                const githubUser: GithubUserInfo = {
+                    id: data.id,
+                    avatar_url: data.avatar_url,
+                    name: data.name,
+                    login: data.login,
+                    html_url: data.html_url,
+                    repos: userRepos ? userRepos : [],
+                };
+                setGithubUser(githubUser);
             }
         } catch (error) {
             if (isAxiosError(error) && error.response?.status === 404) {
@@ -90,7 +98,11 @@ const App = () => {
             );
 
             if (data.length > 0) {
-                setUserRepos(data);
+                const basicRepos: RepositoryBasicInfo[] = data.map((repo) => ({
+                    name: repo.name,
+                    description: repo.description,
+                }));
+                return basicRepos;
             }
         } catch (error) {
             alert("Ocorreu um erro!");
@@ -175,8 +187,8 @@ const App = () => {
                     </SearchArea>
                     {githubUser && <ProfileInfo githubUser={githubUser} />}
                     <SearchResults>
-                        {userRepos.length
-                            ? userRepos.map(
+                        {githubUser?.repos.length
+                            ? githubUser.repos.map(
                                   (repository: RepositoryBasicInfo) => (
                                       <ListItem
                                           repository={repository}
