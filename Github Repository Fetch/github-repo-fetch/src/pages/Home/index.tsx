@@ -31,6 +31,16 @@ const App = () => {
         {}
     );
 
+    const setCachedItem = (key: string, item: string) => {
+        if (localStorage.getItem(key) === null) {
+            localStorage.setItem(key, item);
+        }
+    };
+
+    const getCachedItem = (key: string) => {
+        return localStorage.getItem(key);
+    };
+
     useEffect(() => {
         const getLanguageColors = async () => {
             try {
@@ -94,27 +104,37 @@ const App = () => {
     };
 
     const getExtraInfoFromRepo = async (name: string, repo: string) => {
-        try {
-            const { data } = await api.get<RepositoryExtraInfo>(
-                `/repos/${name}/${repo}`
-            );
+        const cachedData = getCachedItem(`${name}/${repo}`);
 
-            if (data.full_name) {
-                const repoInfo: RepositoryExtraInfo = {
-                    full_name: data.full_name,
-                    name: data.name,
-                    description: data.description,
-                    html_url: data.html_url,
-                    stargazers_count: data.stargazers_count,
-                    archived: data.archived,
-                    created_at: new Date(data.created_at),
-                    updated_at: new Date(data.updated_at),
-                    languageInfo: await getLanguageInfoFromRepo(name, repo),
-                };
-                setRepoInfo(repoInfo);
+        if (cachedData !== null) {
+            const parsedData: RepositoryExtraInfo = JSON.parse(cachedData);
+            parsedData.created_at = new Date(parsedData.created_at);
+            parsedData.updated_at = new Date(parsedData.updated_at);
+            setRepoInfo(parsedData);
+        } else {
+            try {
+                const { data } = await api.get<RepositoryExtraInfo>(
+                    `/repos/${name}/${repo}`
+                );
+
+                if (data.full_name) {
+                    const repoInfo: RepositoryExtraInfo = {
+                        full_name: data.full_name,
+                        name: data.name,
+                        description: data.description,
+                        html_url: data.html_url,
+                        stargazers_count: data.stargazers_count,
+                        archived: data.archived,
+                        created_at: new Date(data.created_at),
+                        updated_at: new Date(data.updated_at),
+                        languageInfo: await getLanguageInfoFromRepo(name, repo),
+                    };
+                    setRepoInfo(repoInfo);
+                    setCachedItem(repoInfo.full_name, JSON.stringify(repoInfo));
+                }
+            } catch (error) {
+                alert("Ocorreu um erro!");
             }
-        } catch (error) {
-            alert("Ocorreu um erro!");
         }
     };
 
