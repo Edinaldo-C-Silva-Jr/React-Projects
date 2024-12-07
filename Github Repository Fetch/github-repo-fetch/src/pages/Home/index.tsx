@@ -56,7 +56,7 @@ const App = () => {
 
                 setLanguageColors(languageColors);
             } catch (error) {
-                alert("Ocorreu um erro!");
+                alert("An error occurred!");
             }
         };
 
@@ -64,8 +64,14 @@ const App = () => {
     }, []);
 
     const getUserFromGithub = async () => {
-        const cachedUser = getCachedItem(usernameInput);
+        setRepoInfo(null);
+        if (!usernameInput) {
+            alert("Invalid search!");
+            setGithubUser(null);
+            return;
+        }
 
+        const cachedUser = getCachedItem(usernameInput);
         if (cachedUser) {
             const parsedUser: GithubUserInfo = JSON.parse(cachedUser);
             setGithubUser(parsedUser)
@@ -91,12 +97,15 @@ const App = () => {
                         fetchedUser.login,
                         JSON.stringify(fetchedUser)
                     );
+                } else {
+                    setGithubUser(null);
                 }
             } catch (error) {
                 if (isAxiosError(error) && error.response?.status === 404) {
-                    alert("Usuário não encontrado!");
+                    alert("User not found!");
+                    setGithubUser(null);
                 } else {
-                    alert("Ocorreu um erro!");
+                    alert("An error occurred!");
                 }
             }
         }
@@ -116,7 +125,7 @@ const App = () => {
                 return basicRepos;
             }
         } catch (error) {
-            alert("Ocorreu um erro!");
+            alert("An error occurred!");
         }
     };
 
@@ -156,7 +165,7 @@ const App = () => {
                     setCachedItem(repoInfo.full_name, JSON.stringify(repoInfo));
                 }
             } catch (error) {
-                alert("Ocorreu um erro!");
+                alert("An error occurred!");
             }
         }
     };
@@ -177,7 +186,7 @@ const App = () => {
 
             return languageInfo;
         } catch (error) {
-            alert("Ocorreu um erro!");
+            alert("An error occurred!");
             return [];
         }
     };
