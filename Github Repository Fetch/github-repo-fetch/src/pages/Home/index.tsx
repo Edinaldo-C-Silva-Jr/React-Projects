@@ -21,6 +21,7 @@ import RepositoryPanel from "../../components/RepositoryPanel";
 import { RepositoryExtraInfo } from "../../components/RepositoryPanel/types";
 import { FormattedLanguageData } from "./types";
 import { LanguageInformation } from "../../components/LanguageTag/types";
+import PageList from "../../components/PageList";
 
 const App = () => {
     const [usernameInput, setUsernameInput] = useState<string>("");
@@ -74,7 +75,7 @@ const App = () => {
         const cachedUser = getCachedItem(usernameInput);
         if (cachedUser) {
             const parsedUser: GithubUserInfo = JSON.parse(cachedUser);
-            setGithubUser(parsedUser)
+            setGithubUser(parsedUser);
         } else {
             try {
                 const { data } = await api.get<GithubUserInfo>(
@@ -206,6 +207,7 @@ const App = () => {
                         <Button onClick={getUserFromGithub} />
                     </SearchArea>
                     {githubUser && <ProfileInfo githubUser={githubUser} />}
+                    <PageList />
                     <SearchResults>
                         {githubUser?.repos.length
                             ? githubUser.repos.map(
