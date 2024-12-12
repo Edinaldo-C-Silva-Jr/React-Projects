@@ -5,6 +5,6 @@ export interface LanguageDataFromFetch {
     };
 }
 
-export interface FormattedLanguageData {
+export interface LanguageData {
     [language: string]: string;
 }

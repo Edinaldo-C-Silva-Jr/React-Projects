@@ -1,17 +1,21 @@
 import { Container, PageNumber, PageText } from "./styles";
+import { PaginationInfo } from "./types";
 
-const PageList = () => {
+const PageList = ({ itemsPerPage, repositoryAmount, changePage }: PaginationInfo) => {
+    const numberOfPages: number = Math.ceil(repositoryAmount / itemsPerPage);
+    const pages: number[] = [];
+
+    for (let i = 0; i < numberOfPages; i++) {
+        pages.push(i + 1);
+    }
+
     return (
         <Container>
-            <PageText>Pages:</PageText>
-            <PageNumber href="#">1</PageNumber>
-            <PageNumber href="#">2</PageNumber>
-            <PageNumber href="#">3</PageNumber>
-            <PageNumber href="#">4</PageNumber>
-            <PageNumber href="#">5</PageNumber>
-            <PageNumber href="#">6</PageNumber>
-            <PageNumber href="#">7</PageNumber>
-            <PageNumber href="#">8</PageNumber>
+            <PageText>Pages</PageText>
+            {pages?.length &&
+                pages.map((page: number) => (
+                    <PageNumber href="#" onClick={() => changePage(page)}>{page}</PageNumber>
+                ))}
         </Container>
     );
 };

@@ -19,7 +19,7 @@ import axios, { isAxiosError } from "axios";
 import { RepositoryBasicInfo } from "../../components/ListItem/types";
 import RepositoryPanel from "../../components/RepositoryPanel";
 import { RepositoryExtraInfo } from "../../components/RepositoryPanel/types";
-import { FormattedLanguageData } from "./types";
+import { LanguageData } from "./types";
 import { LanguageInformation } from "../../components/LanguageTag/types";
 import PageList from "../../components/PageList";
 
@@ -27,9 +27,8 @@ const App = () => {
     const [usernameInput, setUsernameInput] = useState<string>("");
     const [githubUser, setGithubUser] = useState<GithubUserInfo | null>(null);
     const [repoInfo, setRepoInfo] = useState<RepositoryExtraInfo | null>(null);
-    const [languageColors, setLanguageColors] = useState<FormattedLanguageData>(
-        {}
-    );
+    const [languageColors, setLanguageColors] = useState<LanguageData>({});
+    const [currentPage, setCurrentPage] = useState<number>(1);
 
     const setCachedItem = (key: string, item: string) => {
         if (localStorage.getItem(key) === null) {
@@ -48,12 +47,13 @@ const App = () => {
                     `https://raw.githubusercontent.com/ozh/github-colors/master/colors.json`
                 );
 
-                const languageColors: FormattedLanguageData = Object.keys(
-                    data
-                ).reduce((acc: FormattedLanguageData, language: string) => {
-                    acc[language] = data[language].color;
-                    return acc;
-                }, {});
+                const languageColors: LanguageData = Object.keys(data).reduce(
+                    (acc: LanguageData, language: string) => {
+                        acc[language] = data[language].color;
+                        return acc;
+                    },
+                    {}
+                );
 
                 setLanguageColors(languageColors);
             } catch (error) {
@@ -66,6 +66,7 @@ const App = () => {
 
     const getUserFromGithub = async () => {
         setRepoInfo(null);
+        setCurrentPage(1);
         if (!usernameInput) {
             alert("Invalid search!");
             setGithubUser(null);
@@ -192,6 +193,16 @@ const App = () => {
         }
     };
 
+    const getCurrentPageRepos = () => {
+        const firstRepoIndex: number = (currentPage - 1) * 5;
+        const lastRepoIndex: number = currentPage * 5;
+        return githubUser?.repos?.slice(firstRepoIndex, lastRepoIndex) ?? [];
+    };
+
+    const changePage = (page: number) => {
+        setCurrentPage(page);
+    };
+
     return (
         <Container>
             <Header />
@@ -207,18 +218,22 @@ const App = () => {
                         <Button onClick={getUserFromGithub} />
                     </SearchArea>
                     {githubUser && <ProfileInfo githubUser={githubUser} />}
-                    <PageList />
+                    {githubUser?.repos?.length ? (
+                        <PageList
+                            itemsPerPage={5}
+                            repositoryAmount={githubUser?.repos.length}
+                            changePage={changePage}
+                        />
+                    ) : null}
                     <SearchResults>
-                        {githubUser?.repos.length
-                            ? githubUser.repos.map(
-                                  (repository: RepositoryBasicInfo) => (
-                                      <ListItem
-                                          repository={repository}
-                                          clickMethod={handleListItemClick}
-                                      />
-                                  )
-                              )
-                            : null}
+                        {getCurrentPageRepos().map(
+                            (repository: RepositoryBasicInfo) => (
+                                <ListItem
+                                    repository={repository}
+                                    clickMethod={handleListItemClick}
+                                />
+                            )
+                        )}
                     </SearchResults>
                 </LeftColumn>
                 <RightColumn>
