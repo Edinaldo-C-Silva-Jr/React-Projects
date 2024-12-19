@@ -19,7 +19,7 @@ import axios, { isAxiosError } from "axios";
 import { RepositoryBasicInfo } from "../../components/ListItem/types";
 import RepositoryPanel from "../../components/RepositoryPanel";
 import { RepositoryExtraInfo } from "../../components/RepositoryPanel/types";
-import { LanguageData } from "./types";
+import { LanguageData, LanguageDataFromFetch, CachedItemData } from "./types";
 import { LanguageInformation } from "../../components/LanguageTag/types";
 import PageList from "../../components/PageList";
 
@@ -32,18 +32,40 @@ const App = () => {
 
     const setCachedItem = (key: string, item: string) => {
         if (localStorage.getItem(key) === null) {
-            localStorage.setItem(key, item);
+            const futureDate: Date = new Date();
+            futureDate.setDate(futureDate.getDate() + 3);
+
+            const cachedItem: CachedItemData = {
+                item: item,
+                expirationDate: futureDate,
+            };
+            const cachedString: string = JSON.stringify(cachedItem);
+            localStorage.setItem(key, cachedString);
         }
     };
 
     const getCachedItem = (key: string) => {
-        return localStorage.getItem(key);
+        const cachedItem: string = localStorage.getItem(key) ?? "";
+        if (cachedItem) {
+            const parsedCachedItem: CachedItemData = JSON.parse(cachedItem);
+            if (
+                parsedCachedItem &&
+                new Date() > parsedCachedItem.expirationDate
+            ) {
+                localStorage.removeItem(key);
+                return null;
+            } else {
+                return parsedCachedItem.item;
+            }
+        } else {
+            return null;
+        }
     };
 
     useEffect(() => {
         const getLanguageColors = async () => {
             try {
-                const { data } = await axios.get(
+                const { data } = await axios.get<LanguageDataFromFetch>(
                     `https://raw.githubusercontent.com/ozh/github-colors/master/colors.json`
                 );
 
@@ -67,6 +89,7 @@ const App = () => {
     const getUserFromGithub = async () => {
         setRepoInfo(null);
         setCurrentPage(1);
+
         if (!usernameInput) {
             alert("Invalid search!");
             setGithubUser(null);
@@ -75,8 +98,10 @@ const App = () => {
 
         const cachedUser = getCachedItem(usernameInput);
         if (cachedUser) {
+            console.log(cachedUser);
             const parsedUser: GithubUserInfo = JSON.parse(cachedUser);
             setGithubUser(parsedUser);
+            console.log(parsedUser);
         } else {
             try {
                 const { data } = await api.get<GithubUserInfo>(
@@ -229,6 +254,7 @@ const App = () => {
                         {getCurrentPageRepos().map(
                             (repository: RepositoryBasicInfo) => (
                                 <ListItem
+                                    key={repository.name}
                                     repository={repository}
                                     clickMethod={handleListItemClick}
                                 />

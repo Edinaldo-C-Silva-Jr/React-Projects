@@ -19,10 +19,10 @@ const RepositoryPanel = ({ repository }: RepositoryPanelProperties) => {
                 Go to this repository
             </RepoLink>
             <StatisticsContainer>
-                <RepoStatistics>
+                <RepoStatistics key="stars" >
                     Stars: {repository.stargazers_count}
                 </RepoStatistics>
-                <RepoStatistics>
+                <RepoStatistics key="created at" >
                     {`Created at - ${repository.created_at.toLocaleDateString(
                         "en-US",
                         {
@@ -34,12 +34,12 @@ const RepositoryPanel = ({ repository }: RepositoryPanelProperties) => {
                 </RepoStatistics>
             </StatisticsContainer>
             <StatisticsContainer>
-                <RepoStatistics>
+                <RepoStatistics key="archived" >
                     {repository.archived
                         ? "Archived Repository"
                         : "Active Repository"}
                 </RepoStatistics>
-                <RepoStatistics>
+                <RepoStatistics key="updated at" >
                     {`Last updated - ${repository.updated_at.toLocaleDateString(
                         "en-US",
                         {

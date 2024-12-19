@@ -8,3 +8,8 @@ export interface LanguageDataFromFetch {
 export interface LanguageData {
     [language: string]: string;
 }
+
+export interface CachedItemData {
+    item: string;
+    expirationDate: Date;
+}
