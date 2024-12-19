@@ -17,7 +17,8 @@ export const InputContainer = styled.div`
     &:focus-within {
         border: 2px solid #bfdfff;
     }
-
+    
+    // Styles the inner input to leave a few pixels between the border and the text.
     input {
         width: 96%;
         height: 100%;

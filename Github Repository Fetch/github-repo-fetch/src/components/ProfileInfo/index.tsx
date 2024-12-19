@@ -8,6 +8,7 @@ import {
 } from "./styles";
 import { GithubUserProperty } from "./types";
 
+// A component that holds all the information of the Github user's profile.
 const ProfileInfo = ({ githubUser }: GithubUserProperty) => {
     return (
         <ProfileContainer>

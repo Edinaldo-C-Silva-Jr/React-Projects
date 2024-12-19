@@ -1,6 +1,7 @@
 import { InputContainer } from "./styles";
 import { InputProperties } from "./types";
 
+// A standard input component for inputting text.
 const Input = ({value, onChange}: InputProperties) => {
     return (
         <InputContainer>

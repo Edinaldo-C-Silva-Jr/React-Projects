@@ -10,6 +10,7 @@ import {
 } from "./styles";
 import { RepositoryPanelProperties } from "./types";
 
+// A page component that holds the detailed information about a specific Github repository.
 const RepositoryPanel = ({ repository }: RepositoryPanelProperties) => {
     return (
         <Container>
